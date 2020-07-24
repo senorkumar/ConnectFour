@@ -25,6 +25,9 @@ class ConnectFour:
     def get_capacity(self):
         return self.col_capacity
 
+    def get_piece(self,row,col):
+        return self.board[row][col]
+
     def board_to_string(self):
         board_string = ""
         for row in reversed(range(self.ROWS)):
@@ -32,7 +35,6 @@ class ConnectFour:
             for col in range(self.COLS):
                 row_string = row_string + self.board[row][col].value
             board_string = board_string + "\n" + row_string
-        
         return board_string
  
     def place_piece(self, col, piece):
@@ -43,10 +45,80 @@ class ConnectFour:
         else: #place piece
             row = self.col_capacity[col]
             self.col_capacity[col] += 1
-            print((row,col))
+          
             self.board[row][col] = piece
-            return PlacementState.success
-    def check_for_winner(self):
+            return (PlacementState.success, (row,col))
+    
+    def check_for_winner(self, row, col):
+        
+        if self.is_horizontal_win(row,col) or self.is_vertical_win(row,col) or self.is_left_diagonal_win(row,col) or self.is_right_diagonal_win:
+            return True
+        else:
+            return False
+    
+    def is_horizontal_win(self, row, col):
+        for i in range(4):
+            piece_list = [(row-3 +i, col),(row-2 +i,col),(row-1 + i, col),(row + i, col)]
+            if self.check_in_a_row(piece_list):
+                return True
+        return False
+
+    def is_vertical_win(self, row, col):
+        for i in range(4):
+            piece_list = [(row,col-3+i),(row,col-2+i),(row,col-1+i),(row,col+i)]
+            if self.check_in_a_row(piece_list):
+                return True
+        return False
+
+    def is_right_diagonal_win(self,row, col):
+        for i in range(4):
+            piece_list = [(row-3+i,col-3+i),(row-2+i,col-2+i),(row-1+i,col-1+i),(row+i,col+i)]
+            if self.check_in_a_row(piece_list):
+                return True
+        return False
+    
+    def is_left_diagonal_win(self,row, col):
+        for i in range(4):
+            piece_list = [(row+3-i,col-3+i),(row+2-i,col-2+i),(row+1-i,col-1+i),(row-i,col+i)]
+            if self.check_in_a_row(piece_list):
+                return True
+        return False
+
+    def check_in_a_row(self,piece_list):
+        #check that all pieces are valid
+        for coords in piece_list:
+            if coords[0] >= 0 and coords[0]<self.COLS and coords[1] >= 0 and coords[1] <self.COLS:
+                pass #piece if good
+            else:
+                return False
+        piece_set = set()
+        for piece in piece_list:
+            piece_set.add(self.get_piece(piece[0],piece[1]).value)
+        return len(piece_list) == 1 
+
+
+        
+
+            
+
+
+        
+            
+
+     
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+
 
 
 

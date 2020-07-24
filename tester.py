@@ -1,15 +1,4 @@
-from connect_four import ConnectFour
-from piece import Piece
+from game import Game
+from playerType import playerType
 
-x = ConnectFour()
-
-
-x.place_piece(0,Piece.X)
-x.place_piece(0,Piece.X)
-x.place_piece(0,Piece.X)
-x.place_piece(0,Piece.X)
-x.place_piece(0,Piece.X)
-x.place_piece(0,Piece.X)
-x.place_piece(0,Piece.X)
-
-print(x.board_to_string())
+x = Game(playerType.Human, playerType.Human)
