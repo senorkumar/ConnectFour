@@ -39,9 +39,9 @@ class ConnectFour:
  
     def place_piece(self, col, piece):
         if col < self.MIN_COL_INDEX or col > self.MAX_COL_INDEX:
-            return (PlacementState.fail,"column invalid")
+            return (PlacementState.fail,(-1,-1))
         elif self.col_capacity[col] == self.MAX_COL_CAPACITY:
-            return (PlacementState.fail, "column is full")
+            return (PlacementState.fail, (-1,-1))
         else: #place piece
             row = self.col_capacity[col]
             self.col_capacity[col] += 1
@@ -51,7 +51,7 @@ class ConnectFour:
     
     def check_for_winner(self, row, col):
         
-        if self.is_horizontal_win(row,col) or self.is_vertical_win(row,col) or self.is_left_diagonal_win(row,col) or self.is_right_diagonal_win:
+        if self.is_horizontal_win(row,col) or self.is_vertical_win(row,col) or self.is_left_diagonal_win(row,col) or self.is_right_diagonal_win(row,col):
             return True
         else:
             return False
@@ -87,14 +87,24 @@ class ConnectFour:
     def check_in_a_row(self,piece_list):
         #check that all pieces are valid
         for coords in piece_list:
-            if coords[0] >= 0 and coords[0]<self.COLS and coords[1] >= 0 and coords[1] <self.COLS:
+            if coords[0] >= 0 and coords[0]<self.ROWS and coords[1] >= 0 and coords[1] <self.COLS:
                 pass #piece if good
             else:
                 return False
         piece_set = set()
         for piece in piece_list:
             piece_set.add(self.get_piece(piece[0],piece[1]).value)
-        return len(piece_list) == 1 
+        
+        return len(piece_set) ==1
+    
+    #only to be called after checking for a win as the board can be full with a winning position
+    def is_tie(self):
+        for index in self.col_capacity:
+            if index == self.MAX_COL_CAPACITY:
+                pass
+            else:
+                return False
+        return True
 
 
         
